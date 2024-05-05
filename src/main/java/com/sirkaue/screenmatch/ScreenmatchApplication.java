@@ -1,5 +1,6 @@
 package com.sirkaue.screenmatch;
 
+import com.sirkaue.screenmatch.model.DadosEpisodio;
 import com.sirkaue.screenmatch.model.DadosSerie;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
@@ -25,5 +26,10 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
         DadosSerie dadosSerie = conversor.obterDados(json, DadosSerie.class);
         System.out.println(dadosSerie);
+
+        json = consumoApi
+                .obterDados("https://www.omdbapi.com/?t=Game+of+Thrones&season=1&episode=2&apikey=6789de82");
+        DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
+        System.out.println(dadosEpisodio);
     }
 }
