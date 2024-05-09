@@ -36,5 +36,15 @@ public class Menu {
         for (DadosTemporada temporada : temporadas) {
             System.out.println(temporada);
         }
+
+//        for (int i = 0; i < dadosSerie.totalTemporadas(); i++) {
+//            List<DadosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
+//            for (int j = 0; j < episodiosTemporada.size(); j++) {
+//                System.out.println(episodiosTemporada.get(j).titulo());
+//            }
+//        }
+
+        //lambda
+        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
     }
 }
