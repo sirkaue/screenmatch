@@ -3,6 +3,7 @@ package com.sirkaue.screenmatch.menu;
 import com.sirkaue.screenmatch.model.DadosEpisodio;
 import com.sirkaue.screenmatch.model.DadosSerie;
 import com.sirkaue.screenmatch.model.DadosTemporada;
+import com.sirkaue.screenmatch.model.Episodio;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
 
@@ -54,11 +55,21 @@ public class Menu {
                 .stream()
                 .flatMap(t -> t.episodios().stream()).collect(Collectors.toList());
 
+        System.out.println();
         System.out.println("Top 5 episódios: ");
         dadosEpisodios.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadas
+                .stream()
+                .flatMap(t -> t.episodios()
+                                .stream()
+                                .map(d -> new Episodio(t.temporada(), d)))
+                .collect(Collectors.toList());
+
+        episodios.forEach(System.out::println);
     }
 }
