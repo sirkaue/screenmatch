@@ -7,6 +7,8 @@ import com.sirkaue.screenmatch.model.Episodio;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +51,7 @@ public class Menu {
 //        }
 
         //lambda
-        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
+        temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
         List<DadosEpisodio> dadosEpisodios = temporadas
                 .stream()
@@ -66,10 +68,26 @@ public class Menu {
         List<Episodio> episodios = temporadas
                 .stream()
                 .flatMap(t -> t.episodios()
-                                .stream()
-                                .map(d -> new Episodio(t.temporada(), d)))
+                        .stream()
+                        .map(d -> new Episodio(t.temporada(), d)))
                 .collect(Collectors.toList());
 
         episodios.forEach(System.out::println);
+
+        System.out.println("A partir de que ano você deseja ver os episódios? ");
+        int ano = sc.nextInt();
+        sc.nextLine();
+
+        LocalDate dataBusca = LocalDate.of(ano, 1, 1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        episodios.stream()
+                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada() +
+                                " Episódio: " + e.getTitulo() +
+                                " Data lançamento: " + e.getDataLancamento().format(formatter)
+                ));
+
     }
 }
