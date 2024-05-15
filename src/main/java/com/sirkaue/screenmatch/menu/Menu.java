@@ -7,8 +7,6 @@ import com.sirkaue.screenmatch.model.Episodio;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,17 +74,17 @@ public class Menu {
 
         episodios.forEach(System.out::println);
 
-        System.out.println("Digite um trecho do título do episódio");
-        String trechoDoTitulo = sc.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().toUpperCase().contains(trechoDoTitulo.toUpperCase()))
-                .findFirst();
-        if (episodioBuscado.isPresent()) {
-            System.out.println("Episódio encontrado! ");
-            System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
-        } else {
-            System.out.println("Episódio não encontrado!");
-        }
+//        System.out.println("Digite um trecho do título do episódio");
+//        String trechoDoTitulo = sc.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTitulo().toUpperCase().contains(trechoDoTitulo.toUpperCase()))
+//                .findFirst();
+//        if (episodioBuscado.isPresent()) {
+//            System.out.println("Episódio encontrado! ");
+//            System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
+//        } else {
+//            System.out.println("Episódio não encontrado!");
+//        }
 //
 //        System.out.println("A partir de que ano você deseja ver os episódios? ");
 //        int ano = sc.nextInt();
@@ -102,5 +100,11 @@ public class Menu {
 //                                " Episódio: " + e.getTitulo() +
 //                                " Data lançamento: " + e.getDataLancamento().format(formatter)
 //                ));
+
+        Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getAvaliacao)));
+        System.out.println(avaliacoesPorTemporada);
     }
 }
