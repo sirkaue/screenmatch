@@ -16,37 +16,48 @@ public class Menu {
 
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=6789de82";
+    private List<DadosSerie> dadosSeries = new ArrayList<>();
 
     public void exibeMenu() {
-        String menu = """
-                1 - Buscar séries
-                2 - Buscar episódios
-                                
-                0 - Sair
-                """;
+        int opcao = -1;
 
-        System.out.println(menu);
-        int opcao = sc.nextInt();
-        sc.nextLine();
+        while (opcao != 0) {
+            String menu = """
+                    1 - Buscar séries
+                    2 - Buscar episódios
+                    3 - Listar séries buscadas
+                                    
+                    0 - Sair
+                    """;
 
-        switch (opcao) {
-            case 1:
-                buscarSerieWeb();
-                break;
-            case 2:
-                buscarEpisodioPorSerie();
-                break;
-            case 0:
-                System.out.println("Saindo...");
-                break;
-            default:
-                System.out.println("Opção inválida");
+            System.out.println(menu);
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    buscarSerieWeb();
+                    break;
+                case 2:
+                    buscarEpisodioPorSerie();
+                    break;
+                case 3:
+                    listarSeriesBuscadas();
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+            }
         }
     }
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
+        dadosSeries.add(dados);
         System.out.println(dados);
+        System.out.println();
     }
 
     private DadosSerie getDadosSerie() {
@@ -70,5 +81,11 @@ public class Menu {
             temporadas.add(dadosTemporada);
         }
         temporadas.forEach(System.out::println);
+        System.out.println();
+    }
+
+    private void listarSeriesBuscadas() {
+        dadosSeries.forEach(System.out::println);
+        System.out.println();
     }
 }
