@@ -2,12 +2,15 @@ package com.sirkaue.screenmatch.menu;
 
 import com.sirkaue.screenmatch.model.DadosSerie;
 import com.sirkaue.screenmatch.model.DadosTemporada;
+import com.sirkaue.screenmatch.model.Serie;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Menu {
     Scanner sc = new Scanner(System.in);
@@ -85,7 +88,15 @@ public class Menu {
     }
 
     private void listarSeriesBuscadas() {
-        dadosSeries.forEach(System.out::println);
+
+        List<Serie> series = new ArrayList<>();
+        series = dadosSeries.stream()
+                .map(d -> new Serie(d))
+                .collect(Collectors.toList());
+
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
         System.out.println();
     }
 }
