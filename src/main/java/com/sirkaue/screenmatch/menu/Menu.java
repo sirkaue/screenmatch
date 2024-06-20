@@ -3,6 +3,7 @@ package com.sirkaue.screenmatch.menu;
 import com.sirkaue.screenmatch.model.DadosSerie;
 import com.sirkaue.screenmatch.model.DadosTemporada;
 import com.sirkaue.screenmatch.model.Serie;
+import com.sirkaue.screenmatch.repository.SerieRepository;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
 
@@ -20,6 +21,11 @@ public class Menu {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=6789de82";
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+    private SerieRepository repository;
+
+    public Menu(SerieRepository repository) {
+        this.repository = repository;
+    }
 
     public void exibeMenu() {
         int opcao = -1;
@@ -58,7 +64,9 @@ public class Menu {
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
-        dadosSeries.add(dados);
+        Serie serie = new Serie(dados);
+//        dadosSeries.add(dados);
+        repository.save(serie);
         System.out.println(dados);
         System.out.println();
     }
