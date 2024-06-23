@@ -34,7 +34,8 @@ public class Menu {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Listar séries buscadas
-                                    
+                    4 - Buscar série por título
+                                        
                     0 - Sair
                     """;
 
@@ -52,6 +53,8 @@ public class Menu {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriePorTitulo();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -83,13 +86,12 @@ public class Menu {
         listarSeriesBuscadas();
         System.out.println("Escola uma série pelo nome: ");
         String nomeSerie = sc.nextLine();
-
-        Optional<Serie> serie = series.stream()
-                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
-        List<DadosTemporada> temporadas = new ArrayList<>();
+        Optional<Serie> serie = repository.findByTituloContainingIgnoreCase(nomeSerie);
 
         if (serie.isPresent()) {
             Serie serieEncotrada = serie.get();
+            List<DadosTemporada> temporadas = new ArrayList<>();
+
             for (int i = 1; i <= serieEncotrada.getTotalTemporadas(); i++) {
                 String json = consumoApi.obterDados(ENDERECO + serieEncotrada
                         .getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
@@ -114,5 +116,17 @@ public class Menu {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
         System.out.println();
+    }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Escola uma série pelo nome: ");
+        String nomeSerie = sc.nextLine();
+        Optional<Serie> serieBuscada = repository.findByTituloContainingIgnoreCase(nomeSerie);
+
+        if (serieBuscada.isPresent()) {
+            System.out.printf("Dados da série: %s", serieBuscada.get());
+        } else {
+            System.out.println("Série não encontrada");
+        }
     }
 }
