@@ -1,9 +1,6 @@
 package com.sirkaue.screenmatch.menu;
 
-import com.sirkaue.screenmatch.model.DadosSerie;
-import com.sirkaue.screenmatch.model.DadosTemporada;
-import com.sirkaue.screenmatch.model.Episodio;
-import com.sirkaue.screenmatch.model.Serie;
+import com.sirkaue.screenmatch.model.*;
 import com.sirkaue.screenmatch.repository.SerieRepository;
 import com.sirkaue.screenmatch.service.ConsumoApi;
 import com.sirkaue.screenmatch.service.ConverteDados;
@@ -37,6 +34,7 @@ public class Menu {
                     4 - Buscar série por título
                     5 - Buscar série por ator
                     6 - Top 5 séries
+                    7 - Buscar séries por categoria
                                         
                     0 - Sair
                     """;
@@ -63,6 +61,9 @@ public class Menu {
                     break;
                 case 6:
                     buscarTop5Series();
+                    break;
+                case 7:
+                    buscarSeriesPorCategoria();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -157,5 +158,18 @@ public class Menu {
     private void buscarTop5Series() {
         List<Serie> serieTop = repository.findTop5ByOrderByAvaliacaoDesc();
         serieTop.forEach(s -> System.out.println(s.getTitulo() + " - Avaliação: " + s.getAvaliacao()));
+    }
+
+    private void buscarSeriesPorCategoria() {
+        System.out.println("Deseja buscar série de qual categoria/gênero? ");
+        String nomeGenero = sc.nextLine();
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        List<Serie> seriesPorCategoria = repository.findByGenero(categoria);
+        if (!seriesPorCategoria.isEmpty()) {
+            System.out.printf("Séries da categoria %s %n", nomeGenero);
+            seriesPorCategoria.forEach(System.out::println);
+        } else {
+            System.out.println("Série não encontrada");
+        }
     }
 }
