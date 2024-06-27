@@ -39,7 +39,8 @@ public class Menu {
                     8 - Filtrar séries
                     9 - Buscar episódios por trecho
                     10 - Top 5 episódios por série
-                                        
+                    11 - Buscar episódios à partir de uma data
+                    
                     0 - Sair
                     """;
 
@@ -77,6 +78,9 @@ public class Menu {
                     break;
                 case 10:
                     topEpisodiosPorSerie();
+                    break;
+                case 11:
+                    buscarEpisodiosPorDataDeLancamento();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -188,10 +192,10 @@ public class Menu {
 
     private void filtrarSeriesPorTemporadaEAvaliacao() {
         System.out.println("Filtrar séries até quantas temporadas? ");
-        var totalTemporadas = sc.nextInt();
+        Integer totalTemporadas = sc.nextInt();
         sc.nextLine();
         System.out.println("Com avaliação a partir de que valor? ");
-        var avaliacao = sc.nextDouble();
+        Double avaliacao = sc.nextDouble();
         sc.nextLine();
         List<Serie> filtroSeries = repository.seriesPorTemporadaEAvaliacao(totalTemporadas, avaliacao);
         System.out.println("*** Séries filtradas ***");
@@ -227,6 +231,20 @@ public class Menu {
                     + e.getTitulo() + " - "
                     + "Avaliação: "
                     + e.getAvaliacao()));
+        }
+    }
+
+    private void buscarEpisodiosPorDataDeLancamento() {
+        buscarSeriePorTitulo();
+        if (serieBuscada.isPresent()) {
+            Serie serie = serieBuscada.get();
+            System.out.println();
+            System.out.println("Digite o ano limite de lançamento: ");
+            Integer anoLancamento = sc.nextInt();
+            sc.nextLine();
+
+            List<Episodio> episodiosAno = repository.episodiosPorSerieEAno(serie, anoLancamento);
+            episodiosAno.forEach(System.out::println);
         }
     }
 }
