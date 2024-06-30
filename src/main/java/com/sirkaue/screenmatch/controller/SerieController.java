@@ -1,5 +1,6 @@
 package com.sirkaue.screenmatch.controller;
 
+import com.sirkaue.screenmatch.dto.EpisodioDto;
 import com.sirkaue.screenmatch.dto.SerieDto;
 import com.sirkaue.screenmatch.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class SerieController {
     @GetMapping("{id}")
     public SerieDto obterPorId(@PathVariable Long id) {
         return service.findById(id);
+    }
+
+    @GetMapping("/{id}/temporadas/todas")
+    public List<EpisodioDto> obterTodasTemporadas(@PathVariable Long id) {
+        return service.findAllSeason(id);
     }
 }

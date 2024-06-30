@@ -1,5 +1,6 @@
 package com.sirkaue.screenmatch.service;
 
+import com.sirkaue.screenmatch.dto.EpisodioDto;
 import com.sirkaue.screenmatch.dto.SerieDto;
 import com.sirkaue.screenmatch.model.Serie;
 import com.sirkaue.screenmatch.repository.SerieRepository;
@@ -41,6 +42,18 @@ public class SerieService {
                     s.getAtores(),
                     s.getPoster(),
                     s.getSinopse());
+        }
+        return null;
+    }
+
+    public List<EpisodioDto> findAllSeason(Long id) {
+        Optional<Serie> serie = repository.findById(id);
+
+        if (serie.isPresent()) {
+            Serie s = serie.get();
+            return s.getEpisodios().stream().map(e -> new EpisodioDto(e.getTemporada(),
+                    e.getNumeroEpisodio(),
+                    e.getTitulo())).collect(Collectors.toList());
         }
         return null;
     }
