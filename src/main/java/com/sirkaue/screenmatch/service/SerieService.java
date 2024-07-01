@@ -2,6 +2,7 @@ package com.sirkaue.screenmatch.service;
 
 import com.sirkaue.screenmatch.dto.EpisodioDto;
 import com.sirkaue.screenmatch.dto.SerieDto;
+import com.sirkaue.screenmatch.model.Categoria;
 import com.sirkaue.screenmatch.model.Serie;
 import com.sirkaue.screenmatch.repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,11 @@ public class SerieService {
                 .map(e -> new EpisodioDto(e.getTemporada(),
                 e.getNumeroEpisodio(),
                 e.getTitulo())).collect(Collectors.toList());
+    }
+
+    public List<SerieDto> findSeriesByCategory(String nomeGenero) {
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        return convertEntityToDtoList(repository.findByGenero(categoria));
     }
 
     private List<SerieDto> convertEntityToDtoList(List<Serie> series) {
