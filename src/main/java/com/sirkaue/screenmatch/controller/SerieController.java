@@ -2,6 +2,7 @@ package com.sirkaue.screenmatch.controller;
 
 import com.sirkaue.screenmatch.dto.EpisodioDto;
 import com.sirkaue.screenmatch.dto.SerieDto;
+import com.sirkaue.screenmatch.model.Serie;
 import com.sirkaue.screenmatch.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,10 @@ public class SerieController {
     @GetMapping("/categoria/{nomeGenero}")
     public List<SerieDto> obterSeriesPorCategoria(@PathVariable String nomeGenero) {
         return service.findSeriesByCategory(nomeGenero);
+    }
+
+    @GetMapping("{id}/episodios/top")
+    public List<EpisodioDto> obterTopEpisodios(@PathVariable Long id) {
+        return service.obterTopEpisodios(id);
     }
 }
